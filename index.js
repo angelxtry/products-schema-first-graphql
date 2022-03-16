@@ -16,6 +16,7 @@ const server = new ApolloServer({
     type Query {
       hello: String!
       productGroups: [ProductGroup!]!
+      productGroup(id: ID!): ProductGroup
     }
     type ProductGroup {
       id: ID!
@@ -26,6 +27,10 @@ const server = new ApolloServer({
     Query: {
       hello: () => 'world!',
       productGroups: () => productGroups,
+      productGroup: (parent, args, context) => {
+        const { id } = args;
+        return productGroups.find((productGroup) => productGroup.id === id);
+      },
     },
   },
 });
