@@ -1,0 +1,24 @@
+{
+  "name": "products-schema-first-graphql",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/angelxtry/products-schema-first-graphql.git",
+  "author": "sean <sean@gomicorp.com>",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon index"
+  },
+  "dependencies": {
+    "apollo-server": "^3.6.4",
+    "graphql": "^16.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.11.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.5.1"
+  }
+}
