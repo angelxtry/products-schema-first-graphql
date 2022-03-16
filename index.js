@@ -242,7 +242,7 @@ const server = new ApolloServer({
   typeDefs: gql`
     type Query {
       hello: String!
-      productGroups: [ProductGroup!]!
+      productGroups(filter: ProductGroupFilterInput): [ProductGroup!]!
       productGroup(id: ID!): ProductGroup
       productOptionGroups: [ProductOptionGroup!]!
       productOptionGroup(id: ID!): ProductOptionGroup
@@ -271,11 +271,24 @@ const server = new ApolloServer({
       productGroup: ProductGroup!
       productOptions: [ProductOption!]!
     }
+    input ProductGroupFilterInput {
+      productGroupName: String!
+    }
   `,
   resolvers: {
     Query: {
       hello: () => 'world!',
-      productGroups: () => productGroups,
+      productGroups: (parent, args, context) => {
+        const { filter } = args;
+        console.log(filter);
+        let result = productGroups;
+        if (filter.productGroupName) {
+          result = result.filter((pg) =>
+            pg.productGroupName.includes(filter.productGroupName),
+          );
+        }
+        return result;
+      },
       productGroup: (parent, { id: productGroupId }, context) => {
         return productGroups.find((productGroup) => productGroup.id === productGroupId);
       },
