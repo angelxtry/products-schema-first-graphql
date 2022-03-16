@@ -9,7 +9,7 @@ export const typeDefs = gql`
     productOptionGroup(id: ID!): ProductOptionGroup
     productOptions: [ProductOption!]!
     productOption(id: ID!): ProductOption
-    products: [Product!]!
+    products(pageInput: PageInput!): ProductConnection!
     product(id: ID!): Product
   }
   type ProductGroup {
@@ -33,8 +33,20 @@ export const typeDefs = gql`
     productGroup: ProductGroup!
     productOptions: [ProductOption!]!
   }
+  type ProductEdge {
+    node: Product!
+  }
+  type ProductConnection {
+    totalCount: Int!
+    edges: [ProductEdge!]!
+  }
   input ProductGroupFilterInput {
     productGroupName: String
     companyName: String
+  }
+  input PageInput {
+    first: Int = 5
+    last: Int
+    page: Int!
   }
 `;

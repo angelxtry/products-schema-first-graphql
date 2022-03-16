@@ -35,7 +35,20 @@ export const resolvers = {
     productOption: (parent, { id: productOptionId }, context) => {
       return productOptions.find((productOption) => productOption.id === productOptionId);
     },
-    products: () => products,
+    products: (parent, { pageInput }, context) => {
+      const { first, page } = pageInput;
+
+      const index = (page - 1) * first;
+      const result = products.slice(index, index + first);
+
+      const edges = result.map((product) => {
+        return { node: product };
+      });
+      return {
+        totalCount: products.length,
+        edges,
+      };
+    },
     product: (parent, { id: productId }, context) => {
       return products.find((product) => product.id === productId);
     },
