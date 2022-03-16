@@ -4,10 +4,12 @@ const productGroups = [
   {
     id: 'pg1',
     productGroupName: '헤라 블랙쿠션',
+    companyName: '아모레',
   },
   {
     id: 'pg2',
     productGroupName: '헤라 세럼',
+    companyName: '레모아',
   },
 ];
 
@@ -254,6 +256,7 @@ const server = new ApolloServer({
     type ProductGroup {
       id: ID!
       productGroupName: String!
+      companyName: String!
     }
     type ProductOptionGroup {
       id: ID!
@@ -272,7 +275,8 @@ const server = new ApolloServer({
       productOptions: [ProductOption!]!
     }
     input ProductGroupFilterInput {
-      productGroupName: String!
+      productGroupName: String
+      companyName: String
     }
   `,
   resolvers: {
@@ -280,12 +284,14 @@ const server = new ApolloServer({
       hello: () => 'world!',
       productGroups: (parent, args, context) => {
         const { filter } = args;
-        console.log(filter);
         let result = productGroups;
-        if (filter.productGroupName) {
+        if (filter?.productGroupName) {
           result = result.filter((pg) =>
             pg.productGroupName.includes(filter.productGroupName),
           );
+        }
+        if (filter?.companyName) {
+          result = result.filter((pg) => pg.companyName.includes(filter.companyName));
         }
         return result;
       },
