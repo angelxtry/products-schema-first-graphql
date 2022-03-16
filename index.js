@@ -22,6 +22,16 @@ const productOptionGroups = [
     productGroupId: 'bbbb',
     productOptionGroupName: '용량',
   },
+  {
+    id: 'pog3',
+    productGroupId: 'aaaa',
+    productOptionGroupName: '색상',
+  },
+  {
+    id: 'pog4',
+    productGroupId: 'aaaa',
+    productOptionGroupName: '용량',
+  },
 ];
 
 const server = new ApolloServer({
@@ -31,6 +41,7 @@ const server = new ApolloServer({
       productGroups: [ProductGroup!]!
       productGroup(id: ID!): ProductGroup
       productOptionGroups: [ProductOptionGroup!]!
+      productOptionGroup(id: ID!): ProductOptionGroup
     }
     type ProductGroup {
       id: ID!
@@ -50,6 +61,11 @@ const server = new ApolloServer({
         return productGroups.find((productGroup) => productGroup.id === productGroupId);
       },
       productOptionGroups: () => productOptionGroups,
+      productOptionGroup: (parent, { id: productOptionGroupId }, context) => {
+        return productOptionGroups.find(
+          (productOptionGroup) => productOptionGroup.id === productOptionGroupId,
+        );
+      },
     },
     ProductOptionGroup: {
       productGroup: (parent, args, context) => {
