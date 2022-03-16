@@ -35,17 +35,29 @@ export const resolvers = {
     productOption: (parent, { id: productOptionId }, context) => {
       return productOptions.find((productOption) => productOption.id === productOptionId);
     },
-    products: (parent, { pageInput }, context) => {
+    products: (parent, { pageInput, filter }, context) => {
       const { first, page } = pageInput;
 
-      const index = (page - 1) * first;
-      const result = products.slice(index, index + first);
+      const result = {
+        products,
+        totalCount: 0,
+      };
 
-      const edges = result.map((product) => {
+      if (filter) {
+        result.products = result.products.filter((product) =>
+          product.productName.includes(filter.productName),
+        );
+        result.totalCount = result.products.length;
+      }
+
+      const index = (page - 1) * first;
+      result.products = result.products.slice(index, index + first);
+
+      const edges = result.products.map((product) => {
         return { node: product };
       });
       return {
-        totalCount: products.length,
+        totalCount: result.totalCount,
         edges,
       };
     },
@@ -54,22 +66,35 @@ export const resolvers = {
     },
   },
   ProductGroup: {
-    products: (parent, { pageInput }, context) => {
+    products: (parent, { pageInput, filter }, context) => {
       const { id: productGroupId } = parent;
       const { first, page } = pageInput;
 
-      const productsByGroup = products.filter(
+      const result = {
+        products,
+        totalCount: 0,
+      };
+
+      result.products = result.products.filter(
         (product) => product.productGroupId === productGroupId,
       );
+      result.totalCount = result.products.length;
+
+      if (filter) {
+        result.products = result.products.filter((product) =>
+          product.productName.includes(filter.productName),
+        );
+        result.totalCount = result.products.length;
+      }
 
       const index = (page - 1) * first;
-      const result = productsByGroup.slice(index, index + first);
+      result.products = result.products.slice(index, index + first);
 
-      const edges = result.map((product) => {
+      const edges = result.products.map((product) => {
         return { node: product };
       });
       return {
-        totalCount: productsByGroup.length,
+        totalCount: result.totalCount,
         edges,
       };
     },
