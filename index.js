@@ -6,6 +6,11 @@ const server = new ApolloServer({
       hello: String!
     }
   `,
+  resolvers: {
+    Query: {
+      hello: () => 'world!',
+    },
+  },
 });
 
 server.listen({ port: 4002 }).then(({ url }) => {
