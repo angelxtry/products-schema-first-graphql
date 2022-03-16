@@ -27,9 +27,8 @@ const server = new ApolloServer({
     Query: {
       hello: () => 'world!',
       productGroups: () => productGroups,
-      productGroup: (parent, args, context) => {
-        const { id } = args;
-        return productGroups.find((productGroup) => productGroup.id === id);
+      productGroup: (parent, { id: productGroupId }, context) => {
+        return productGroups.find((productGroup) => productGroup.id === productGroupId);
       },
     },
   },
