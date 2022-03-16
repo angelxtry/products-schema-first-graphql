@@ -16,6 +16,7 @@ export const typeDefs = gql`
     id: ID!
     productGroupName: String!
     companyName: String!
+    products(pageInput: PageInput!): ProductConnection!
   }
   type ProductOptionGroup {
     id: ID!

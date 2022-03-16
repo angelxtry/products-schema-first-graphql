@@ -53,6 +53,27 @@ export const resolvers = {
       return products.find((product) => product.id === productId);
     },
   },
+  ProductGroup: {
+    products: (parent, { pageInput }, context) => {
+      const { id: productGroupId } = parent;
+      const { first, page } = pageInput;
+
+      const productsByGroup = products.filter(
+        (product) => product.productGroupId === productGroupId,
+      );
+
+      const index = (page - 1) * first;
+      const result = productsByGroup.slice(index, index + first);
+
+      const edges = result.map((product) => {
+        return { node: product };
+      });
+      return {
+        totalCount: productsByGroup.length,
+        edges,
+      };
+    },
+  },
   ProductOptionGroup: {
     productGroup: (parent, args, context) => {
       const { productGroupId } = parent;
