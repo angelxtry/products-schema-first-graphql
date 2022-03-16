@@ -49,4 +49,49 @@ export const products = [
     productName: '헤라 세럼 - 콜라겐 리프팅 / 55ml',
     productGroupId: 'pg2',
   },
+  {
+    id: 'p11',
+    productName: '프리미엄 썸머 컬러 부츠컷 - Black / S',
+    productGroupId: 'pg2',
+  },
+  {
+    id: 'p12',
+    productName: '프리미엄 썸머 컬러 부츠컷 - Black / M',
+    productGroupId: 'pg2',
+  },
+  {
+    id: 'p13',
+    productName: '프리미엄 썸머 컬러 부츠컷 - Black / L',
+    productGroupId: 'pg2',
+  },
+  {
+    id: 'p14',
+    productName: '프리미엄 썸머 컬러 부츠컷 - Sky Purple / S',
+    productGroupId: 'pg2',
+  },
+  {
+    id: 'p15',
+    productName: '프리미엄 썸머 컬러 부츠컷 - Sky Purple / M',
+    productGroupId: 'pg2',
+  },
+  {
+    id: 'p16',
+    productName: '프리미엄 썸머 컬러 부츠컷 - Sky Purple / L',
+    productGroupId: 'pg2',
+  },
+  {
+    id: 'p17',
+    productName: '프리미엄 썸머 컬러 부츠컷 - Yellow / S',
+    productGroupId: 'pg2',
+  },
+  {
+    id: 'p18',
+    productName: '프리미엄 썸머 컬러 부츠컷 - Yellow / M',
+    productGroupId: 'pg2',
+  },
+  {
+    id: 'p19',
+    productName: '프리미엄 썸머 컬러 부츠컷 - Yellow / L',
+    productGroupId: 'pg2',
+  },
 ];

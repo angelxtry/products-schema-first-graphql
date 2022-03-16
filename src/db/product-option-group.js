@@ -19,4 +19,14 @@ export const productOptionGroups = [
     productGroupId: 'pg1',
     productOptionGroupName: '용량',
   },
+  {
+    id: 'pog5',
+    productGroupId: 'pg3',
+    productOptionGroupName: '색상',
+  },
+  {
+    id: 'pog6',
+    productGroupId: 'pg3',
+    productOptionGroupName: '크기',
+  },
 ];

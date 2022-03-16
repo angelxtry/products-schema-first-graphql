@@ -44,4 +44,34 @@ export const productOptions = [
     productOptionGroupId: 'pog2',
     productOption: '55ml',
   },
+  {
+    id: 'po10',
+    productOptionGroupId: 'pog5',
+    productOption: 'Black',
+  },
+  {
+    id: 'po11',
+    productOptionGroupId: 'pog5',
+    productOption: 'Sky Purple',
+  },
+  {
+    id: 'po12',
+    productOptionGroupId: 'pog5',
+    productOption: 'Yellow',
+  },
+  {
+    id: 'po13',
+    productOptionGroupId: 'pog6',
+    productOption: 'S',
+  },
+  {
+    id: 'po14',
+    productOptionGroupId: 'pog6',
+    productOption: 'M',
+  },
+  {
+    id: 'po15',
+    productOptionGroupId: 'pog6',
+    productOption: 'L',
+  },
 ];
