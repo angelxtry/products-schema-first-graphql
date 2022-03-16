@@ -1,7 +1,7 @@
 {
   "name": "products-schema-first-graphql",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.js",
   "repository": "https://github.com/angelxtry/products-schema-first-graphql.git",
   "author": "sean <sean@gomicorp.com>",
   "license": "MIT",
