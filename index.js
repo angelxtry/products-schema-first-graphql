@@ -2,11 +2,11 @@ import { ApolloServer, gql } from 'apollo-server';
 
 const productGroups = [
   {
-    id: 'aaaa',
+    id: 'pg1',
     productGroupName: '헤라 블랙쿠션',
   },
   {
-    id: 'bbbb',
+    id: 'pg2',
     productGroupName: '헤라 세럼',
   },
 ];
@@ -82,6 +82,59 @@ const productOptions = [
   },
 ];
 
+const products = [
+  {
+    id: 'p1',
+    productName: '헤라 블랙쿠션 - 21 (라이트 베이지) / 12g',
+    productGroupId: 'pg1',
+  },
+  {
+    id: 'p2',
+    productName: '헤라 블랙쿠션 - 23 (미디움 베이지) / 12g',
+    productGroupId: 'pg1',
+  },
+  {
+    id: 'p3',
+    productName: '헤라 블랙쿠션 - 21 (라이트 베이지) / 15g',
+    productGroupId: 'pg1',
+  },
+  {
+    id: 'p4',
+    productName: '헤라 블랙쿠션 - 23 (미디움 베이지) / 15g',
+    productGroupId: 'pg1',
+  },
+  {
+    id: 'p5',
+    productName: '헤라 세럼 - 24K 골드 리페어 / 35ml',
+    productGroupId: 'pg2',
+  },
+  {
+    id: 'p6',
+    productName: '헤라 세럼 - 비타민 C 브라이트 / 35ml',
+    productGroupId: 'pg2',
+  },
+  {
+    id: 'p7',
+    productName: '헤라 세럼 - 콜라겐 리프팅 / 35ml',
+    productGroupId: 'pg2',
+  },
+  {
+    id: 'p8',
+    productName: '헤라 세럼 - 24K 골드 리페어 / 55ml',
+    productGroupId: 'pg2',
+  },
+  {
+    id: 'p9',
+    productName: '헤라 세럼 - 비타민 C 브라이트 / 55ml',
+    productGroupId: 'pg2',
+  },
+  {
+    id: 'p10',
+    productName: '헤라 세럼 - 콜라겐 리프팅 / 55ml',
+    productGroupId: 'pg2',
+  },
+];
+
 const server = new ApolloServer({
   typeDefs: gql`
     type Query {
@@ -92,6 +145,8 @@ const server = new ApolloServer({
       productOptionGroup(id: ID!): ProductOptionGroup
       productOptions: [ProductOption!]!
       productOption(id: ID!): ProductOption
+      products: [Product!]!
+      product(id: ID!): Product
     }
     type ProductGroup {
       id: ID!
@@ -106,6 +161,11 @@ const server = new ApolloServer({
       id: ID!
       productOption: String!
       productOptionGroup: ProductOptionGroup!
+    }
+    type Product {
+      id: ID!
+      productName: String!
+      productGroup: ProductGroup!
     }
   `,
   resolvers: {
@@ -127,6 +187,10 @@ const server = new ApolloServer({
           (productOption) => productOption.id === productOptionId,
         );
       },
+      products: () => products,
+      product: (parent, { id: productId }, context) => {
+        return products.find((product) => product.id === productId);
+      },
     },
     ProductOptionGroup: {
       productGroup: (parent, args, context) => {
@@ -140,6 +204,12 @@ const server = new ApolloServer({
         return productOptionGroups.find(
           (productOptionGroup) => productOptionGroup.id === productOptionGroupId,
         );
+      },
+    },
+    Product: {
+      productGroup: (parent, args, context) => {
+        const { productGroupId } = parent;
+        return productGroups.find((productGroup) => productGroup.id === productGroupId);
       },
     },
   },
