@@ -14,22 +14,22 @@ const productGroups = [
 const productOptionGroups = [
   {
     id: 'pog1',
-    productGroupId: 'bbbb',
+    productGroupId: 'pg2',
     productOptionGroupName: '종류',
   },
   {
     id: 'pog2',
-    productGroupId: 'bbbb',
+    productGroupId: 'pg2',
     productOptionGroupName: '용량',
   },
   {
     id: 'pog3',
-    productGroupId: 'aaaa',
+    productGroupId: 'pg1',
     productOptionGroupName: '색상',
   },
   {
     id: 'pog4',
-    productGroupId: 'aaaa',
+    productGroupId: 'pg1',
     productOptionGroupName: '용량',
   },
 ];
@@ -135,6 +135,109 @@ const products = [
   },
 ];
 
+const productOptionDetailRel = [
+  {
+    id: 'podr1',
+    productId: 'p1',
+    productOptionId: 'po1',
+  },
+  {
+    id: 'podr2',
+    productId: 'p1',
+    productOptionId: 'po3',
+  },
+  {
+    id: 'podr3',
+    productId: 'p2',
+    productOptionId: 'po2',
+  },
+  {
+    id: 'podr4',
+    productId: 'p2',
+    productOptionId: 'po3',
+  },
+  {
+    id: 'podr5',
+    productId: 'p3',
+    productOptionId: 'po1',
+  },
+  {
+    id: 'podr6',
+    productId: 'p3',
+    productOptionId: 'po4',
+  },
+  {
+    id: 'podr7',
+    productId: 'p4',
+    productOptionId: 'po2',
+  },
+  {
+    id: 'podr8',
+    productId: 'p4',
+    productOptionId: 'po4',
+  },
+  {
+    id: 'podr9',
+    productId: 'p5',
+    productOptionId: 'po5',
+  },
+  {
+    id: 'podr10',
+    productId: 'p5',
+    productOptionId: 'po8',
+  },
+  {
+    id: 'podr11',
+    productId: 'p6',
+    productOptionId: 'po6',
+  },
+  {
+    id: 'podr12',
+    productId: 'p6',
+    productOptionId: 'po8',
+  },
+  {
+    id: 'podr13',
+    productId: 'p7',
+    productOptionId: 'po7',
+  },
+  {
+    id: 'podr14',
+    productId: 'p7',
+    productOptionId: 'po8',
+  },
+  {
+    id: 'podr15',
+    productId: 'p8',
+    productOptionId: 'po5',
+  },
+  {
+    id: 'podr16',
+    productId: 'p8',
+    productOptionId: 'po9',
+  },
+  {
+    id: 'podr17',
+    productId: 'p9',
+    productOptionId: 'po6',
+  },
+  {
+    id: 'podr18',
+    productId: 'p9',
+    productOptionId: 'po9',
+  },
+  {
+    id: 'podr19',
+    productId: 'p10',
+    productOptionId: 'po7',
+  },
+  {
+    id: 'podr20',
+    productId: 'p10',
+    productOptionId: 'po9',
+  },
+];
+
 const server = new ApolloServer({
   typeDefs: gql`
     type Query {
@@ -166,6 +269,7 @@ const server = new ApolloServer({
       id: ID!
       productName: String!
       productGroup: ProductGroup!
+      productOptions: [ProductOption!]!
     }
   `,
   resolvers: {
@@ -210,6 +314,18 @@ const server = new ApolloServer({
       productGroup: (parent, args, context) => {
         const { productGroupId } = parent;
         return productGroups.find((productGroup) => productGroup.id === productGroupId);
+      },
+      productOptions: (parent, args, context) => {
+        const { id: productId } = parent;
+        const relations = productOptionDetailRel.filter(
+          (rel) => rel.productId === productId,
+        );
+        const options = [];
+        for (const rel of relations) {
+          const option = productOptions.find((po) => po.id === rel.productOptionId);
+          if (option) options.push(option);
+        }
+        return options;
       },
     },
   },
