@@ -12,6 +12,6 @@ export const productGroups = [
   {
     id: 'pg3',
     productGroupName: '프리미엄 썸머 컬러 부츠컷',
-    companyName: '엔비룩',
+    companyName: '옷가게',
   },
 ];

@@ -1,16 +1,10 @@
-import {
-  productGroups,
-  productOptionDetailRel,
-  productOptionGroups,
-  productOptions,
-  products,
-} from '../db/index.js';
+import { paginatedFn } from '../utils/paginatedFn.js';
 
 export const resolvers = {
   Query: {
     hello: () => 'world!',
-    productGroups: (parent, args, context) => {
-      const { filter } = args;
+
+    productGroups: (_, { filter }, { productGroups }) => {
       let result = productGroups;
       if (filter?.productGroupName) {
         result = result.filter((pg) =>
@@ -22,104 +16,74 @@ export const resolvers = {
       }
       return result;
     },
-    productGroup: (parent, { id: productGroupId }, context) => {
+
+    productGroup: (_, { productGroupId }, { productGroups }) => {
       return productGroups.find((productGroup) => productGroup.id === productGroupId);
     },
-    productOptionGroups: () => productOptionGroups,
-    productOptionGroup: (parent, { id: productOptionGroupId }, context) => {
+
+    productOptionGroups: (_, __, { productOptionGroups }) => productOptionGroups,
+
+    productOptionGroup: (parent, { productOptionGroupId }, { productOptionGroups }) => {
       return productOptionGroups.find(
         (productOptionGroup) => productOptionGroup.id === productOptionGroupId,
       );
     },
-    productOptions: () => productOptions,
-    productOption: (parent, { id: productOptionId }, context) => {
+
+    productOptions: (_, __, { productOptions }) => productOptions,
+
+    productOption: (_, { productOptionId }, { productOptions }) => {
       return productOptions.find((productOption) => productOption.id === productOptionId);
     },
-    products: (parent, { pageInput, filter }, context) => {
-      const { first, page } = pageInput;
 
-      const result = {
-        products,
-        totalCount: 0,
-      };
-
+    products: (_, { pagination, filter }, { products }) => {
+      let data = products;
+      const productsResultFn = paginatedFn(pagination);
       if (filter) {
-        result.products = result.products.filter((product) =>
-          product.productName.includes(filter.productName),
-        );
-        result.totalCount = result.products.length;
+        data = data.filter((product) => product.productName.includes(filter.productName));
       }
-
-      const index = (page - 1) * first;
-      result.products = result.products.slice(index, index + first);
-
-      const edges = result.products.map((product) => {
-        return { node: product };
-      });
-      return {
-        totalCount: result.totalCount,
-        edges,
-      };
+      return productsResultFn(data);
     },
-    product: (parent, { id: productId }, context) => {
+
+    product: (_, { productId }, { products }) => {
       return products.find((product) => product.id === productId);
     },
   },
+
   ProductGroup: {
-    products: (parent, { pageInput, filter }, context) => {
-      const { id: productGroupId } = parent;
-      const { first, page } = pageInput;
-
-      const result = {
-        products,
-        totalCount: 0,
-      };
-
-      result.products = result.products.filter(
-        (product) => product.productGroupId === productGroupId,
-      );
-      result.totalCount = result.products.length;
-
+    products: ({ id: productGroupId }, { pagination, filter }, { products }) => {
+      let data = products.filter((product) => product.productGroupId === productGroupId);
+      const productResultFn = paginatedFn(pagination);
       if (filter) {
-        result.products = result.products.filter((product) =>
-          product.productName.includes(filter.productName),
-        );
-        result.totalCount = result.products.length;
+        data = data.filter((product) => product.productName.includes(filter.productName));
       }
-
-      const index = (page - 1) * first;
-      result.products = result.products.slice(index, index + first);
-
-      const edges = result.products.map((product) => {
-        return { node: product };
-      });
-      return {
-        totalCount: result.totalCount,
-        edges,
-      };
+      return productResultFn(data);
     },
   },
+
   ProductOptionGroup: {
-    productGroup: (parent, args, context) => {
-      const { productGroupId } = parent;
+    productGroup: ({ productGroupId }, __, { productGroups }) => {
       return productGroups.find((productGroup) => productGroup.id === productGroupId);
     },
   },
+
   ProductOption: {
-    productOptionGroup: (parent, args, context) => {
-      const { productOptionGroupId } = parent;
+    productOptionGroup: ({ productOptionGroupId }, __, { productOptionGroups }) => {
       return productOptionGroups.find(
         (productOptionGroup) => productOptionGroup.id === productOptionGroupId,
       );
     },
   },
+
   Product: {
-    productGroup: (parent, args, context) => {
-      const { productGroupId } = parent;
+    productGroup: ({ productGroupId }, __, { productGroups }) => {
       return productGroups.find((productGroup) => productGroup.id === productGroupId);
     },
-    productOptions: (parent, args, context) => {
-      const { id: productId } = parent;
+
+    productOptions: (
+      { id: productId },
+      __,
+      { productOptionDetailRel, productOptions },
+    ) => {
       const relations = productOptionDetailRel.filter(
         (rel) => rel.productId === productId,
       );
